@@ -2,7 +2,7 @@
   "name": "cesa-escape-room",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://SeyedAhmadMousabii.github.io/escape_room.git",
+  "homepage": "https://SeyedAhmadMousavii.github.io/escape_room",
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
