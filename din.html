@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en" onclick="jump()">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dinosaur Jump Game</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+        font-family: "Arial", sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+        color: #e6e6e6;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .game {
+        width: calc(100% - 40px);
+        height: 200px;
+        border: 2px solid #4cc9f0;
+        border-radius: 10px;
+        background: rgba(0, 0, 0, 0.3);
+        box-shadow: 0 0 20px rgba(76, 201, 240, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+
+      #character {
+        width: 20px;
+        height: 50px;
+        background: linear-gradient(45deg, #f72585, #b5179e);
+        position: relative;
+        top: 150px;
+        margin-left: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(247, 37, 133, 0.5);
+      }
+
+      .animate {
+        animation: jump 0.5s linear;
+      }
+
+      @keyframes jump {
+        0% {
+          top: 150px;
+        }
+        30% {
+          top: 50px;
+        }
+        70% {
+          top: 50px;
+        }
+        100% {
+          top: 150px;
+        }
+      }
+
+      #block {
+        background: linear-gradient(45deg, #4cc9f0, #4895ef);
+        width: 20px;
+        height: 20px;
+        position: relative;
+        top: 130px;
+        left: 500px;
+        animation: block 2s infinite linear;
+        border-radius: 3px;
+        box-shadow: 0 0 10px rgba(76, 201, 240, 0.7);
+      }
+
+      @keyframes block {
+        0% {
+          left: 500px;
+        }
+        100% {
+          left: -20px;
+        }
+      }
+
+      p {
+        text-align: center;
+        margin: 20px;
+        font-weight: bold;
+        font-size: 30px;
+        color: #f8f8f8;
+        text-shadow: 0 0 10px rgba(76, 201, 240, 0.7);
+      }
+
+      .game-over {
+        color: #f72585;
+        text-shadow: 0 0 10px rgba(247, 37, 133, 0.7);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="game">
+      <div id="character"></div>
+      <div id="block"></div>
+    </div>
+    <p>Score: <span id="scorespan">0</span></p>
+
+    <script>
+      var character = document.getElementById("character");
+      var block = document.getElementById("block");
+      var counter = 0;
+
+      function jump() {
+        if (character.classList == "animate") return;
+        character.classList.add("animate");
+        setTimeout(function () {
+          character.classList.remove("animate");
+        }, 300);
+      }
+      var sendInfo = setInterval(function () {
+        let score = Math.floor(counter / 100);
+        window.parent.postMessage(score, "*");
+      }, 100);
+      var checkDead = setInterval(function () {
+        let characterTop = parseInt(
+          window.getComputedStyle(character).getPropertyValue("top"),
+        );
+        let blockLeft = parseInt(
+          window.getComputedStyle(block).getPropertyValue("left"),
+        );
+
+        if (blockLeft < 40 && blockLeft > 0 && characterTop >= 100) {
+          block.style.animation = "none";
+          let finalScore = Math.floor(counter / 100);
+
+          if (finalScore > 10) {
+            // alert("Game Over! Score: " + finalScore + "\n\nسومین حرف رمز: R");
+          } else {
+            // alert("Game Over! Score: " + finalScore);
+          }
+
+          counter = 0;
+          block.style.animation = "block 2s infinite linear";
+        } else {
+          counter++;
+          document.getElementById("scorespan").innerHTML = Math.floor(
+            counter / 100,
+          );
+        }
+      }, 10);
+    </script>
+  </body>
+</html>
